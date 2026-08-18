@@ -13,6 +13,21 @@
   --shadow: 0 1.5rem 3rem rgba(8, 12, 24, 0.35);
 }
 
+[data-theme="light"] {
+  --bg: #f4f7fb;
+  --panel: rgba(255, 255, 255, 0.88);
+  --panel-strong: #ffffff;
+  --panel-soft: #e9eef7;
+  --surface: #172033;
+  --ink: #172033;
+  --muted: #56647a;
+  --primary: #4969d8;
+  --primary-strong: #2f4db8;
+  --accent: #147b68;
+  --line: rgba(23, 32, 51, 0.14);
+  --shadow: 0 1.5rem 3rem rgba(37, 53, 82, 0.14);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -30,6 +45,13 @@ body {
     var(--bg);
   color: var(--ink);
   line-height: 1.6;
+}
+
+[data-theme="light"] body {
+  background:
+    radial-gradient(circle at top left, rgba(73, 105, 216, 0.12), transparent 28%),
+    radial-gradient(circle at bottom right, rgba(20, 123, 104, 0.1), transparent 25%),
+    var(--bg);
 }
 
 a {
@@ -107,6 +129,10 @@ p {
   border-bottom: 1px solid var(--line);
 }
 
+[data-theme="light"] .site-header {
+  background: rgba(244, 247, 251, 0.78);
+}
+
 .nav-wrapper {
   height: 78px;
   display: flex;
@@ -143,6 +169,47 @@ p {
 
 .main-nav a {
   transition: color 0.2s ease;
+}
+
+.theme-checkbox {
+  --toggle-size: 13px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 5em;
+  height: 2.5em;
+  margin: 0;
+  background: linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
+  background-size: 205%;
+  background-position: 0;
+  transition: 0.4s;
+  border-radius: 99em;
+  position: relative;
+  cursor: pointer;
+  font-size: var(--toggle-size);
+}
+
+.theme-checkbox::before {
+  content: "";
+  width: 1.8em;
+  height: 1.8em;
+  position: absolute;
+  top: 0.35em;
+  left: 0.35em;
+  background: linear-gradient(to right, #efefef 50%, #2a2a2a 50%) no-repeat;
+  background-size: 205%;
+  background-position: 100%;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.theme-checkbox:checked::before {
+  left: calc(100% - 1.8em - 0.35em);
+  background-position: 0;
+}
+
+.theme-checkbox:checked {
+  background-position: 100%;
 }
 
 .main-nav a:hover,
@@ -213,6 +280,12 @@ p {
   box-shadow: none;
 }
 
+[data-theme="light"] .button-secondary {
+  background: #000000;
+  color: #ffffff;
+  border-color: #000000;
+}
+
 .hero {
   padding: 5rem 0 4rem;
 }
@@ -275,6 +348,18 @@ p {
   border-radius: 1.5rem;
   padding: 2rem;
   box-shadow: var(--shadow);
+}
+
+[data-theme="light"] .profile-card,
+[data-theme="light"] .skill-card,
+[data-theme="light"] .project-card,
+[data-theme="light"] .timeline-item {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="light"] .card-metrics div,
+[data-theme="light"] .contact-box {
+  background: rgba(23, 32, 51, 0.04);
 }
 
 .avatar {
@@ -508,6 +593,10 @@ p {
 
   .main-nav {
     display: none;
+  }
+
+  .theme-checkbox {
+    margin-left: auto;
   }
 }
 
