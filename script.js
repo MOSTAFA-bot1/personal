@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
-  const themeToggle = document.querySelector('.theme-checkbox');
+  const themeToggle = document.querySelector('.input');
   const savedTheme = localStorage.getItem('theme');
 
   if (savedTheme === 'light') {
