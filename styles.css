@@ -185,6 +185,31 @@ p {
   transform: translateX(8px);
 }
 
+.language-switcher {
+  display: inline-flex;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+
+.language-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 0.35rem 0.55rem;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: 700 0.7rem/1 "Inter", sans-serif;
+}
+
+.language-button.is-active,
+.language-button:hover,
+.language-button:focus-visible {
+  background: var(--primary);
+  color: white;
+}
+
 .toggleWrapper .input {
   position: absolute;
   left: -999em;
