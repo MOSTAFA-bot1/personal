@@ -1,116 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   const yearEl = document.getElementById('year');
   const themeToggle = document.querySelector('.theme-toggle');
-  const languageToggle = document.querySelector('#langBtn');
   const savedTheme = localStorage.getItem('theme');
-  const savedLanguage = localStorage.getItem('language') || 'en';
-
-  const translations = {
-    About: 'نبذة',
-    Projects: 'المشاريع',
-    Experience: 'الخبرة',
-    Contact: 'تواصل',
-    Home: 'الرئيسية',
-    Projects: 'المشاريع',
-    "Live projects in the portfolio.": 'مشاريع منشورة في معرض الأعمال.',
-    "Explore projects ": 'استكشف المشاريع ',
-    Experience: 'الخبرة',
-    "Months of hands-on front-end work.": 'أشهر من العمل العملي في الواجهات الأمامية.',
-    "View experience ": 'عرض الخبرة ',
-    "Next move": 'الخطوة التالية',
-    "Have an idea worth building?": 'هل لديك فكرة تستحق البناء؟',
-    "Bring the rough version. We can give it shape together.": 'أحضر النسخة الأولية، ويمكننا أن نعطيها شكلا معا.',
-    "Start a conversation": 'ابدأ محادثة',
-    Settings: 'الإعدادات',
-    "Make this space yours.": 'اجعل هذه المساحة لك.',
-    "Update your profile and display preferences.": 'حدّث ملفك الشخصي وتفضيلات العرض.',
-    "Display name": 'اسم العرض',
-    Language: 'اللغة',
-    Appearance: 'المظهر',
-    Dark: 'داكن',
-    Light: 'فاتح',
-    "Save changes": 'حفظ التغييرات',
-    "Let's talk": 'لنتحدث',
-    "View project": 'عرض المشروع',
-    "Selected work": 'أعمال مختارة',
-    "A small archive of": 'أرشيف صغير من',
-    "shipped ideas.": 'الأفكار المنفذة.',
-    "A few projects that show how I think about structure, visual systems, content, and the last ten percent of polish.": 'بعض المشاريع التي توضح طريقة تفكيري في الهيكلة والأنظمة البصرية والمحتوى ولمسات الإتقان الأخيرة.',
-    "Islamic / Reading": 'إسلامي / قراءة',
-    Live: 'متاح',
-    "Quran Reader": 'قارئ القرآن',
-    "A focused reading experience with all 114 surahs, designed for long sessions and easy navigation.": 'تجربة قراءة مركزة تشمل السور الـ114، مصممة للجلسات الطويلة والتنقل السهل.',
-    "Electronics Store": 'متجر إلكترونيات',
-    "A multi-section marketing site with a clean product-forward layout and clear navigation.": 'موقع تسويقي متعدد الأقسام بتخطيط واضح يركز على المنتجات وتنقل سهل.',
-    "Brand / Commerce": 'علامة تجارية / تجارة',
-    "Business Site": 'موقع أعمال',
-    Elnoor: 'النور',
-    "A complete front-end build with custom styling, animation, and a strong service-led content flow.": 'بناء متكامل للواجهة الأمامية بتنسيق مخصص وحركة وتدفق محتوى قوي يركز على الخدمات.',
-    "I am currently looking for a project where thoughtful design and a reliable front-end can make a measurable difference.": 'أبحث حاليا عن مشروع يمكن للتصميم المدروس والواجهة الأمامية الموثوقة أن يصنعا فيه فرقا ملموسا.',
-    "Message received": 'تم استلام الرسالة',
-    "Message Sent Successfully ": 'تم إرسال الرسالة بنجاح ',
-    "Thanks for reaching out.": 'شكرا لتواصلك.',
-    "Your message is on its way. I will get back to you soon.": 'رسالتك في طريقها إلي. سأعاود التواصل معك قريبا.',
-    "Back to Contact ": 'العودة إلى التواصل ',
-  };
-
-  const languageTextNodes = new Map();
-
-  const applyLanguage = (language) => {
-    const isArabic = language === 'ar';
-    document.documentElement.lang = isArabic ? 'ar' : 'en';
-    document.documentElement.dir = isArabic ? 'rtl' : 'ltr';
-
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    let node;
-    while ((node = walker.nextNode())) {
-      if (node.parentElement?.closest('script, style, .lang-toggle-btn')) continue;
-      if (!languageTextNodes.has(node)) languageTextNodes.set(node, node.textContent);
-      const original = languageTextNodes.get(node);
-      const trimmed = original.trim();
-      if (!trimmed) continue;
-      const translated = isArabic ? translations[trimmed] : trimmed;
-      if (!translated) continue;
-      const start = original.indexOf(trimmed);
-      node.textContent = `${original.slice(0, start)}${translated}${original.slice(start + trimmed.length)}`;
-    }
-
-    document.querySelectorAll('[placeholder]').forEach((field) => {
-      if (!field.dataset.languagePlaceholder) field.dataset.languagePlaceholder = field.placeholder;
-      const placeholder = field.dataset.languagePlaceholder;
-      const placeholderTranslations = {
-        'Tell me about your project': 'حدثني عن مشروعك',
-        'What would you like to make?': 'ماذا تريد أن نصنع؟',
-      };
-      field.placeholder = isArabic ? (placeholderTranslations[placeholder] || placeholder) : placeholder;
-    });
-
-    document.querySelectorAll('.project-card').forEach((card) => {
-      const title = card.querySelector('h3')?.textContent.trim();
-      if (title) card.setAttribute('aria-label', `${isArabic ? 'عرض' : 'View'} ${title}`);
-    });
-
-    if (languageToggle) {
-      languageToggle.setAttribute('aria-pressed', String(isArabic));
-      languageToggle.setAttribute('aria-label', isArabic ? 'Switch to English' : 'Switch to Arabic');
-      const languageFlag = languageToggle.querySelector('.flag');
-      const languageLabel = languageToggle.querySelector('.lang-text');
-      if (languageFlag) languageFlag.textContent = isArabic ? '🇸🇦' : '🇺🇸';
-      if (languageLabel) languageLabel.textContent = isArabic ? 'العربية' : 'English';
-    }
-
-    localStorage.setItem('language', language);
-  };
-
-  applyLanguage(savedLanguage);
-
-  if (languageToggle) {
-    languageToggle.addEventListener('click', () => {
-      const nextLanguage = document.documentElement.lang === 'ar' ? 'en' : 'ar';
-      applyLanguage(nextLanguage);
-    });
-  }
-
   if (savedTheme === 'light') {
     document.documentElement.dataset.theme = 'light';
   }
@@ -165,7 +56,13 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!isFormValid) return;
 
       const submitButton = contactForm.querySelector('button[type="submit"]');
-      if (submitButton) submitButton.disabled = true;
+      const submitText = submitButton ? submitButton.querySelector('span') : null;
+      const originalText = submitText ? submitText.textContent : 'Send';
+
+      if (submitButton) {
+        submitButton.disabled = true;
+        if (submitText) submitText.textContent = 'Sending...';
+      }
 
       try {
         const response = await fetch(contactForm.action, {
@@ -186,7 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
           formStatus.hidden = false;
         }
       } finally {
-        if (submitButton) submitButton.disabled = false;
+        if (submitButton) {
+          submitButton.disabled = false;
+          if (submitText) submitText.textContent = originalText;
+        }
       }
     });
 
@@ -219,10 +119,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.querySelectorAll('.project-card').forEach((card) => {
-    const projectLink = card.querySelector('a[href]');
+    const projectLink = card.querySelector('.btn-17') || card.querySelector('a[href]');
     if (!projectLink) return;
 
-    card.setAttribute('role', 'link');
     card.setAttribute('tabindex', '0');
     const projectTitle = card.querySelector('h3')?.textContent.trim() || (document.documentElement.lang === 'ar' ? 'مشروع' : 'project');
     card.setAttribute('aria-label', `${document.documentElement.lang === 'ar' ? 'عرض' : 'View'} ${projectTitle}`);
@@ -235,10 +134,33 @@ document.addEventListener('DOMContentLoaded', () => {
     card.addEventListener('click', openProject);
     card.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter' && event.key !== ' ') return;
+      if (event.target.closest('a, button')) return;
       event.preventDefault();
       projectLink.click();
     });
   });
+
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  const filterableCards = document.querySelectorAll('.project-grid .project-card');
+
+  if (filterButtons.length > 0 && filterableCards.length > 0) {
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach((b) => b.classList.remove('is-active'));
+        btn.classList.add('is-active');
+        const filter = btn.dataset.filter;
+
+        filterableCards.forEach((card) => {
+          const category = card.dataset.category;
+          if (filter === 'all' || category === filter) {
+            card.classList.remove('is-hidden');
+          } else {
+            card.classList.add('is-hidden');
+          }
+        });
+      });
+    });
+  }
 
   const navToggle = document.querySelector('.nav-toggle');
   const mainNav = document.querySelector('.main-nav');
@@ -344,11 +266,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const typedOutput = document.getElementById('typed-output');
   const phrases = [
-    'clean, responsive web experiences.',
-    'beautiful user interfaces.',
-    'modern websites with HTML & CSS.',
-    'polished front-end projects.',
-    'simple, effective designs.',
+    'responsive, high-performance web apps.',
+    'clean, modern interfaces with HTML & CSS.',
+    'accessible, component-driven experiences.',
+    'pixel-perfect UI with JavaScript ES6+.',
+    'interactive and thoughtful digital products.',
   ];
   const TYPE_SPEED = 65;
   const DELETE_SPEED = 38;
